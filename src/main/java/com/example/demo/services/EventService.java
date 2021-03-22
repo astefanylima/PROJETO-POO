@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.demo.dto.EventDTO;
+import com.example.demo.dto.EventInsertDTO;
 import com.example.demo.entities.Event;
 import com.example.demo.repositories.EventRepository;
 
@@ -30,6 +31,12 @@ public class EventService {
         return new EventDTO(event);
     }
 
+    public EventDTO insert(EventInsertDTO insertDTO) {
+        Event entity = new Event(insertDTO);
+        entity = repo.save(entity);
+        return new EventDTO(entity);
+    }
+
     private List<EventDTO> toDTOList(List<Event> list) {
         List<EventDTO> listDTO = new ArrayList<>();
 
@@ -38,5 +45,7 @@ public class EventService {
         }
         return listDTO;
     }
+
+
 
 }

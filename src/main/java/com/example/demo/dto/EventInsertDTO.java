@@ -5,8 +5,7 @@ import java.time.LocalTime;
 
 import com.example.demo.entities.Event;
 
-public class EventDTO {
-    private Long id;
+public class EventInsertDTO {
     private String name;
     private String description;
     private String place;
@@ -16,12 +15,11 @@ public class EventDTO {
     private LocalTime endTime;
     private String emailContact;
 
-    public EventDTO (){
+    public EventInsertDTO (){
 
     }
     
-	public EventDTO(Event event) {
-        setId(event.getId());
+	public EventInsertDTO(Event event) {
         setName(event.getName());
         setDescription(event.getDescription());
         setPlace(event.getPlace());
@@ -32,9 +30,8 @@ public class EventDTO {
         setEmailContact(event.getEmailContact());
 	}
 
-    public EventDTO(Long id, String name, String description, String place, LocalDate startDate, LocalDate endDate,
+    public EventInsertDTO(String name, String description, String place, LocalDate startDate, LocalDate endDate,
             LocalTime startTime, LocalTime endTime, String emailContact) {
-        this.id = id;
         this.name = name;
         this.description = description;
         this.place = place;
@@ -43,14 +40,6 @@ public class EventDTO {
         this.startTime = startTime;
         this.endTime = endTime;
         this.emailContact = emailContact;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getName() {
