@@ -13,6 +13,7 @@ import com.example.demo.entities.Event;
 import com.example.demo.repositories.EventRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -38,6 +39,14 @@ public class EventService {
         Event entity = new Event(insertDTO);
         entity = repo.save(entity);
         return new EventDTO(entity);
+    }
+
+    public void delete(Long id) {
+        try {
+            repo.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
+        }
     }
 
     public EventDTO update(Long id, EventUpdateDTO updateDTO) {
