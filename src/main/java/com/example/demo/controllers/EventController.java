@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
 import java.net.URI;
-import java.util.List;
+import java.time.LocalDate;
 
 import com.example.demo.dto.EventDTO;
 import com.example.demo.dto.EventInsertDTO;
@@ -62,11 +62,16 @@ public class EventController {
         @RequestParam(value = "page",         defaultValue = "0") Integer page,
         @RequestParam(value = "linesPerPage", defaultValue = "3") Integer linesPerPage,
         @RequestParam(value = "direction",    defaultValue = "ASC") String direction,
-        @RequestParam(value = "orderBy",      defaultValue = "id") String orderBy
-    ){
+        @RequestParam(value = "orderBy",      defaultValue = "id") String orderBy,
+        @RequestParam(value = "name",         defaultValue = "") String name,
+        @RequestParam(value = "description",  defaultValue = "") String description,
+        @RequestParam(value = "place",        defaultValue = "") String place,
+        @RequestParam(value = "startDate",    defaultValue = "") String startDate
 
+    ){
+        LocalDate data = LocalDate.parse(startDate);
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),orderBy);
-        Page <EventDTO> list = service.getClients(pageRequest);
+        Page <EventDTO> list = service.getEvents(pageRequest, name, description, place, data);
         return ResponseEntity.ok().body(list);
     }
     

@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -79,9 +80,9 @@ public class EventService {
         return listDTO;
     }
 
-    public Page<EventDTO> getClients(PageRequest pageRequest) {
+    public Page<EventDTO> getEvents(PageRequest pageRequest, String name, String description, String place, LocalDate startDate) {
 
-        Page<Event> list = repo.find(pageRequest);
+        Page<Event> list = repo.find(pageRequest, name, description, place, startDate);
         return list.map( c -> new EventDTO(c));
     }
 
