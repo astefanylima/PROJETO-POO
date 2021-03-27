@@ -74,7 +74,5 @@ public class EventController {
         Page <EventDTO> list = service.getEvents(pageRequest, name, description, place, data);
         return ResponseEntity.ok().body(list);
     }
-    
 
-    
 }

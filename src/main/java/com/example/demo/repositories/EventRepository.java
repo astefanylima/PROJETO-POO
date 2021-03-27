@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-
 @Repository
 public interface EventRepository extends JpaRepository <Event,Long> {
 
@@ -20,7 +19,7 @@ public interface EventRepository extends JpaRepository <Event,Long> {
     "LOWER(table.name)          LIKE    LOWER(CONCAT('%', :name, '%')) AND " +
     "LOWER(table.description)   LIKE    LOWER(CONCAT('%', :description, '%')) AND " +
     "LOWER(table.place)         LIKE    LOWER(CONCAT('%', :place, '%')) AND " +
-    "table.startDate            >        :startDate"
+    "table.startDate            >       :startDate"
 )
 public Page<Event> find(Pageable pageRequest, String name, String description, String place, LocalDate startDate);
 
