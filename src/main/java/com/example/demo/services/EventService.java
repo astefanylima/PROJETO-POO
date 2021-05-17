@@ -25,66 +25,63 @@ import org.springframework.web.server.ResponseStatusException;
 public class EventService {
     
     @Autowired
-    private EventRepository repo;
+    private EventRepository repository;
 
-    public List<EventDTO> getEvent() {
-        List<Event> list = repo.findAll();
-        return toDTOList(list);
+    public Page<EventDTO> getEvents(PageRequest pageRequest, String name, String description, String place,
+            String emailContact, LocalDate startDate) {
+        Page<Event> list = repository.find(pageRequest, name, description, place, emailContact, startDate);
+        return list.map(e -> new EventDTO(e));
     }
 
     public EventDTO getEventById(Long id) {
-        Optional<Event> op = repo.findById(id);
-        Event event = op.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
+        Optional<Event> op = repository.findById(id);
+        Event event = op.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found by id"));
         return new EventDTO(event);
     }
 
-    public EventDTO insert(EventInsertDTO insertDTO) {
-        Event entity = new Event(insertDTO);
-        entity = repo.save(entity);
-        return new EventDTO(entity);
+    public EventDTO insertEvent(EventInsertDTO eventInsertDTO) {
+
+        if (eventInsertDTO.getStartDate().compareTo(eventInsertDTO.getEndDate()) > 0) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "The end date should be bigger than the start date!");
+        } else {
+            Event entity = new Event(eventInsertDTO);
+            entity = repository.save(entity);
+            return new EventDTO(entity);
+        }
     }
 
-    public void delete(Long id) {
+    public void deleteEvent(Long id) {
         try {
-            repo.deleteById(id);
+            repository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
         }
     }
 
-    public EventDTO update(Long id, EventUpdateDTO updateDTO) {
-        try {
-            Event entity = repo.getOne(id);
-            entity.setName(updateDTO.getName());
-            entity.setDescription(updateDTO.getDescription());
-            entity.setPlace(updateDTO.getPlace());
-            entity.setStartDate(updateDTO.getStartDate());
-            entity.setEndDate(updateDTO.getEndDate());
-            entity.setStartTime(updateDTO.getStartTime());
-            entity.setEndTime(updateDTO.getEndTime());
-            entity.setEmailContact(updateDTO.getEmailContact());
-            entity = repo.save(entity);
+    public EventDTO updateEvent(Long id, EventUpdateDTO eventUpdateDTO) {
+       
+        
+        if (eventUpdateDTO.getStartDate().compareTo(eventUpdateDTO.getEndDate()) > 0) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "The end date should be bigger than the start date!");
+        } else {
+        {
+            try {
+                Event entity = repository.getOne(id);
+                entity.setName(eventUpdateDTO.getName());
+                entity = repository.save(entity);
+                return new EventDTO(entity);
+    
+            } catch (EntityNotFoundException e) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
+            }
 
-            return new EventDTO(entity);
-        } catch (EntityNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found");
         }
-    }
-
-    private List<EventDTO> toDTOList(List<Event> list) {
-        List<EventDTO> listDTO = new ArrayList<>();
-
-        for (Event c : list) {
-            listDTO.add(new EventDTO(c.getId(), c.getName(), c.getDescription(), c.getPlace(), c.getStartDate(), c.getEndDate(), c.getStartTime(), c.getEndTime(), c.getEmailContact()));
-        }
-        return listDTO;
-    }
-
-    public Page<EventDTO> getEvents(PageRequest pageRequest, String name, String description, String place, LocalDate startDate) {
-
-        Page<Event> list = repo.find(pageRequest, name, description, place, startDate);
-        return list.map( c -> new EventDTO(c));
+        
+        
     }
 
 
+}
 }

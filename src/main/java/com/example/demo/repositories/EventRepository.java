@@ -14,13 +14,20 @@ import org.springframework.data.jpa.repository.Query;
 @Repository
 public interface EventRepository extends JpaRepository <Event,Long> {
 
-    @Query("SELECT table FROM Event table " +  
-    "WHERE " +
-    "LOWER(table.name)          LIKE    LOWER(CONCAT('%', :name, '%')) AND " +
-    "LOWER(table.description)   LIKE    LOWER(CONCAT('%', :description, '%')) AND " +
-    "LOWER(table.place)         LIKE    LOWER(CONCAT('%', :place, '%')) AND " +
-    "table.startDate            >       :startDate"
-)
-public Page<Event> find(Pageable pageRequest, String name, String description, String place, LocalDate startDate);
+        @Query("SELECT e FROM Event e " + 
+           "WHERE " +
+           " LOWER(e.name)               LIKE   LOWER(CONCAT('%', :name, '%')) AND " +
+           " LOWER(e.description)        LIKE   LOWER(CONCAT('%', :description, '%')) AND " +
+           " LOWER(e.place)              LIKE   LOWER(CONCAT('%', :place, '%')) AND " +
+           " e.startDate                  >     :startDate                       AND " +
+           " LOWER(e.emailContact)      LIKE   LOWER(CONCAT('%', :emailContact, '%'))")
+
+        public Page<Event> find(Pageable pageRequest, 
+                                String name,
+                                String description,
+                                String place,
+                                String emailContact,
+                                LocalDate startDate
+                                );
 
 }

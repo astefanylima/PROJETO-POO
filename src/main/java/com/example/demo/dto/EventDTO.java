@@ -4,23 +4,38 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.example.demo.entities.Event;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class EventDTO {
+
     private Long id;
     private String name;
     private String description;
     private String place;
+
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate startDate;
+    
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate endDate;
+    
     private LocalTime startTime;
     private LocalTime endTime;
     private String emailContact;
 
-    public EventDTO (){
+    public EventDTO()
+    {
 
     }
     
-	public EventDTO(Event event) {
+    public EventDTO(Long id, String name)
+    {
+        setId(id);
+        setName(name);
+    }
+    
+    public EventDTO(Event event)
+    {
         setId(event.getId());
         setName(event.getName());
         setDescription(event.getDescription());
@@ -30,27 +45,14 @@ public class EventDTO {
         setStartTime(event.getStartTime());
         setEndTime(event.getEndTime());
         setEmailContact(event.getEmailContact());
-	}
-
-    public EventDTO(Long id, String name, String description, String place, LocalDate startDate, LocalDate endDate,
-            LocalTime startTime, LocalTime endTime, String emailContact) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.place = place;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.emailContact = emailContact;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -115,5 +117,5 @@ public class EventDTO {
 
     public void setEmailContact(String emailContact) {
         this.emailContact = emailContact;
-    }
+    }  
 }
