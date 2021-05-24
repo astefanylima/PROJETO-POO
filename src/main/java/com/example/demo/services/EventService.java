@@ -47,6 +47,9 @@ public class EventService {
                     "The end date should be bigger than the start date!");
         } else {
             Event entity = new Event(eventInsertDTO);
+            if(adminrepository.existsById(eventInsertDTO.getIdAdmin())==false)
+            entity.setAdmin(null);
+            else
             entity.setAdmin(adminrepository.findById(eventInsertDTO.getIdAdmin()).get());
             entity = repository.save(entity);
             return new EventDTO(entity);

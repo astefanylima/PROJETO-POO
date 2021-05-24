@@ -13,8 +13,6 @@ public interface AdminRepository extends JpaRepository <Admin,Long> {
 
    public Page<Admin> findAll(Pageable pageRequest);
 
-
-
 }
 
 
