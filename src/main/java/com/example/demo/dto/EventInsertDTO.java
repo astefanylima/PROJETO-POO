@@ -8,8 +8,6 @@ public class EventInsertDTO {
     private Long idAdmin;
     private String name;
     private String description;
-    private String place;
-    
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalTime startTime;
@@ -30,12 +28,6 @@ public class EventInsertDTO {
     }
     public void setDescription(String description) {
         this.description = description;
-    }
-    public String getPlace() {
-        return place;
-    }
-    public void setPlace(String place) {
-        this.place = place;
     }
     public LocalDate getStartDate() {
         return startDate;
