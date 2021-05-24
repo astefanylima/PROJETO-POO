@@ -1,12 +1,8 @@
 package com.example.demo.controllers;
 
 import java.net.URI;
-import java.time.LocalDate;
-
-import com.example.demo.dto.EventDTO;
-import com.example.demo.dto.EventInsertDTO;
-import com.example.demo.dto.EventUpdateDTO;
-import com.example.demo.services.EventService;
+import com.example.demo.dto.AttendDTO;
+import com.example.demo.services.AttendService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,41 +21,37 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequestMapping ("/events")
-public class EventController {
+@RequestMapping ("/attendees")
+public class AttendController {
     
     @Autowired
-    private EventService service;
+    private AttendService service;
 
     @GetMapping
-    public ResponseEntity<Page<EventDTO>> getEvents(
+    public ResponseEntity<Page<AttendDTO>> getAttend(
 
         @RequestParam(value = "page",         defaultValue = "0") Integer page,
         @RequestParam(value = "linesPerPage", defaultValue = "10") Integer linesPerPage,
         @RequestParam(value = "direction",    defaultValue = "ASC") String direction,
-        @RequestParam(value = "orderBy",      defaultValue = "id") String orderBy,
-        @RequestParam(value = "name",         defaultValue = "") String name,
-        @RequestParam(value = "description",  defaultValue = "") String description,
-        @RequestParam(value = "emailContact", defaultValue = "") String emailContact,
-        @RequestParam(value = "startDate", defaultValue = "1900-01-01") String startDate    
+        @RequestParam(value = "orderBy",      defaultValue = "id") String orderBy     
     
     )   {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction),orderBy);
-        LocalDate data = LocalDate.parse(startDate);
-        Page <EventDTO> list = service.getEvents(pageRequest, name.trim(), description.trim(), emailContact.trim(), data);
+        
+        Page <AttendDTO> list = service.getAttend(pageRequest);
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<EventDTO> getEventById(@PathVariable Long id){
-        EventDTO dto = service.getEventById(id);
+    public ResponseEntity<AttendDTO> getAttendById(@PathVariable Long id){
+        AttendDTO dto = service.getAttendById(id);
         return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping
-    public ResponseEntity<EventDTO> insert(@RequestBody EventInsertDTO insertDTO) {
+    public ResponseEntity<AttendDTO> insert(@RequestBody AttendDTO insertDTO) {
 
-        EventDTO dto = service.insertEvent(insertDTO);
+        AttendDTO dto = service.insertAttend(insertDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
 
@@ -67,13 +59,13 @@ public class EventController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.deleteEvent(id);
+        service.deleteAttend(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<EventDTO> update(@RequestBody EventUpdateDTO updateDTO, @PathVariable Long id) {
-        EventDTO dto = service.updateEvent(id, updateDTO);
+    public ResponseEntity<AttendDTO> update(@RequestBody AttendDTO updateDTO, @PathVariable Long id) {
+        AttendDTO dto = service.updateAttend(id, updateDTO);
         return ResponseEntity.ok().body(dto);
     }
 

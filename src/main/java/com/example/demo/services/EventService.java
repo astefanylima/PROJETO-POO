@@ -9,6 +9,7 @@ import com.example.demo.dto.EventDTO;
 import com.example.demo.dto.EventInsertDTO;
 import com.example.demo.dto.EventUpdateDTO;
 import com.example.demo.entities.Event;
+import com.example.demo.repositories.AdminRepository;
 import com.example.demo.repositories.EventRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,11 @@ public class EventService {
     
     @Autowired
     private EventRepository repository;
+    @Autowired
+    private AdminRepository adminrepository;
 
-    public Page<EventDTO> getEvents(PageRequest pageRequest, String name, String description, String place,
-            String emailContact, LocalDate startDate) {
-        Page<Event> list = repository.find(pageRequest, name, description, place, emailContact, startDate);
+    public Page<EventDTO> getEvents(PageRequest pageRequest, String name, String description, String emailContact, LocalDate startDate) {
+        Page<Event> list = repository.find(pageRequest, name, description, emailContact, startDate);
         return list.map(e -> new EventDTO(e));
     }
 
@@ -37,6 +39,7 @@ public class EventService {
         return new EventDTO(event);
     }
 
+    
     public EventDTO insertEvent(EventInsertDTO eventInsertDTO) {
 
         if (eventInsertDTO.getStartDate().compareTo(eventInsertDTO.getEndDate()) > 0) {
@@ -44,10 +47,12 @@ public class EventService {
                     "The end date should be bigger than the start date!");
         } else {
             Event entity = new Event(eventInsertDTO);
+            entity.setAdmin(adminrepository.findById(eventInsertDTO.getIdAdmin()).get());
             entity = repository.save(entity);
             return new EventDTO(entity);
         }
     }
+
 
     public void deleteEvent(Long id) {
         try {

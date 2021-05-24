@@ -5,6 +5,7 @@ import java.time.LocalTime;
 
 public class EventInsertDTO {
 
+    private Long idAdmin;
     private String name;
     private String description;
     private String place;
@@ -14,6 +15,9 @@ public class EventInsertDTO {
     private LocalTime startTime;
     private LocalTime endTime;
     private String emailContact;
+    private Long amountFreeTickets;
+    private Long amountPayedTickets;
+    private Long priceTicket;
     
     public String getName() {
         return name;
@@ -63,4 +67,30 @@ public class EventInsertDTO {
     public void setEmailContact(String emailContact) {
         this.emailContact = emailContact;
     }
+    public Long getAmountFreeTickets() {
+        return amountFreeTickets;
+    }
+    public void setAmountFreeTickets(Long amountFreeTickets) {
+        this.amountFreeTickets = amountFreeTickets;
+    }
+    public Long getAmountPayedTickets() {
+        return amountPayedTickets;
+    }
+    public void setAmountPayedTickets(Long amountPayedTickets) {
+        this.amountPayedTickets = amountPayedTickets;
+    }
+    public Long getPriceTicket() {
+        return priceTicket;
+    }
+    public void setPriceTicket(Long priceTicket) {
+        this.priceTicket = priceTicket;
+    }
+    public Long getIdAdmin() {
+        return idAdmin;
+    }
+    public void setIdAdmin(Long idAdmin) {
+        this.idAdmin = idAdmin;
+    }
+
+    
 }
